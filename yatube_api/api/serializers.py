@@ -49,13 +49,13 @@ class FollowSerializer(serializers.ModelSerializer):
             UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
                 fields=('user', 'following'),
-                message=('Неверный запрос. '
-                         'Повторная подписка невозможна.')
+                message=('Неправильный запрос. '
+                         'Вы не можете повторно подписаться.')
             ),
         )
 
     def validate_following(self, value):
         if (self.context['request'].user == value):
-            raise ParseError('Неверный запрос.'
-                             'Попытка подписки на себя.')
+            raise ParseError('Неправильный запрос.'
+                             'Вы не можете подписаться сами на себя.')
         return value
